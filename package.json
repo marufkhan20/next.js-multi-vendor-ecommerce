@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/ws": "^8.18.1",
     "prisma": "^6.15.0",
     "tailwindcss": "^4"
   }
