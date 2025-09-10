@@ -115,7 +115,7 @@ export default function CreateStore() {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       fetchSellerStatus();
     }
   }, [user]);
