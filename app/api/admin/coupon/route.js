@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     const { userId } = getAuth(request);
-    const isAdmin = await authAdmin(userId);
+    const isAdmin = authAdmin(userId);
 
     if (!isAdmin) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function POST(request) {
 export async function DELETE(request) {
   try {
     const { userId } = getAuth(request);
-    const isAdmin = await authAdmin(userId);
+    const isAdmin = authAdmin(userId);
 
     if (!isAdmin) {
       return NextResponse.json(
@@ -52,7 +52,7 @@ export async function DELETE(request) {
       );
     }
 
-    const { searchParams } = await request.nextUrl();
+    const { searchParams } = await request.nextUrl;
     const code = searchParams.get("code");
 
     await prisma.coupon.delete({
@@ -77,7 +77,10 @@ export async function DELETE(request) {
 export async function GET(request) {
   try {
     const { userId } = getAuth(request);
-    const isAdmin = await authAdmin(userId);
+    console.log("userid", userId);
+    const isAdmin = authAdmin(userId);
+
+    console.log("isAdmin", isAdmin);
 
     if (!isAdmin) {
       return NextResponse.json(
