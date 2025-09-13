@@ -32,7 +32,7 @@ export async function POST(request) {
 }
 
 // Get All addresses for the user
-export async function POST(request) {
+export async function GET(request) {
   try {
     const { userId } = getAuth(request);
 

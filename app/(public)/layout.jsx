@@ -2,6 +2,7 @@
 import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { fetchAddress } from "@/lib/features/address/addressSlice";
 import { fetchCart, uploadCart } from "@/lib/features/cart/cartSlice";
 import { fetchProducts } from "@/lib/features/product/productSlice";
 import { useAuth, useUser } from "@clerk/nextjs";
@@ -22,6 +23,7 @@ export default function PublicLayout({ children }) {
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchCart({ getToken }));
+      dispatch(fetchAddress({ getToken }));
     }
   }, [user]);
 
