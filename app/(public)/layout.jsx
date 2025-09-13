@@ -1,16 +1,23 @@
-'use client'
+"use client";
 import Banner from "@/components/Banner";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import { fetchProducts } from "@/lib/features/product/productSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PublicLayout({ children }) {
+  const dispatch = useDispatch();
 
-    return (
-        <>
-            <Banner />
-            <Navbar />
-            {children}
-            <Footer />
-        </>
-    );
+  useEffect(() => {
+    dispatch(fetchProducts({}));
+  }, []);
+  return (
+    <>
+      <Banner />
+      <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
 }
