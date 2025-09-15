@@ -1,6 +1,7 @@
 "use client";
 import Loading from "@/components/Loading";
 import { useAuth, useUser } from "@clerk/nextjs";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 

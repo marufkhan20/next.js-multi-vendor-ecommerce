@@ -1,10 +1,11 @@
+import { fetchCart } from "@/lib/features/cart/cartSlice";
 import { Protect, useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { PlusIcon, SquarePenIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddressModal from "./AddressModal";
 
 const OrderSummary = ({ totalPrice, items }) => {
@@ -21,6 +22,8 @@ const OrderSummary = ({ totalPrice, items }) => {
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [couponCodeInput, setCouponCodeInput] = useState("");
   const [coupon, setCoupon] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleCouponCode = async (event) => {
     event.preventDefault();
@@ -53,7 +56,48 @@ const OrderSummary = ({ totalPrice, items }) => {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
 
-    router.push("/orders");
+    try {
+      if (!user) {
+        return toast.error("Please login to place an order");
+      }
+
+      if (!selectedAddress) {
+        return toast.error("Please select an address.");
+      }
+
+      const token = await getToken();
+
+      const orderData = {
+        addressId: selectedAddress.id,
+        items,
+        paymentMethod,
+      };
+
+      if (coupon) {
+        orderData.couponCode = coupon.code;
+      }
+
+      const { data } = await axios.post(`/api/orders`, orderData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (paymentMethod === "STRIPE") {
+        window.location.href = data.session.url;
+      } else {
+        toast.success(data.message);
+        router.push("/orders");
+        dispatch(
+          fetchCart({
+            getToken,
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.error || error.message);
+    }
   };
 
   return (
