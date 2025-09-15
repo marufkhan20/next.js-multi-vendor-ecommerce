@@ -16,7 +16,7 @@ export async function GET(request) {
     const store = await prisma.store.findUnique({
       where: { username },
       include: {
-        Product: { include: { ratings: true } },
+        Product: { include: { rating: true } },
       },
     });
 
