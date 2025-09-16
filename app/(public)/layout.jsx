@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { fetchAddress } from "@/lib/features/address/addressSlice";
 import { fetchCart, uploadCart } from "@/lib/features/cart/cartSlice";
 import { fetchProducts } from "@/lib/features/product/productSlice";
+import { fetchUserRatings } from "@/lib/features/rating/ratingSlice";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +25,7 @@ export default function PublicLayout({ children }) {
     if (user?.id) {
       dispatch(fetchCart({ getToken }));
       dispatch(fetchAddress({ getToken }));
+      dispatch(fetchUserRatings({ getToken }));
     }
   }, [user]);
 
